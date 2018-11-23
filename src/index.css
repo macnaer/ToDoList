@@ -13,3 +13,14 @@
   -ms-flex-align: center;
   align-items: center;
 }
+
+.app {
+  max-width: 960px;
+  width: 100%;
+}
+.header {
+  text-align: center;
+  font-weight: 500;
+  color: grey;
+  text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
+}

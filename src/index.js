@@ -11,37 +11,49 @@ class App extends React.Component {
     this.state = { Notes: [] };
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     let localNotes = JSON.parse(localStorage.getItem("notes"));
     if (localNotes) {
       this.setState({
         Notes: localNotes
       });
     }
-  }
+  };
 
-  updateStorage() {
+  handleDeleteNotes = note => {
+    let noteId = note.id;
+    let newNotes = this.state.Notes.filter(function(note) {
+      return note.id !== noteId;
+    });
+    this.setState({ Notes: newNotes });
+  };
+
+  componentDidUpdate = () => {
+    this.updateStorage();
+  };
+
+  updateStorage = () => {
     let notes = JSON.stringify(this.state.Notes);
     localStorage.setItem("notes", notes);
-  }
+  };
 
   handleAddNote = newNote => {
     let newNotes = this.state.Notes.slice();
     newNotes.unshift(newNote);
-    this.setState(
-      {
-        Notes: newNotes
-      },
-      this.updateStorage
-    );
+    this.setState({
+      Notes: newNotes
+    });
   };
 
   render() {
     return (
-      <div>
-        <h2>ToDoList</h2>
+      <div className="app">
+        <h2 className="header">ToDoList</h2>
         <Textarea noteAdd={this.handleAddNote} />
-        <NotesList Notes={this.state.Notes} />
+        <NotesList
+          Notes={this.state.Notes}
+          handleDeleteNotes={this.handleDeleteNotes}
+        />
       </div>
     );
   }
