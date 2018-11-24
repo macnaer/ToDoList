@@ -5,7 +5,8 @@ class TextItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ""
+      text: "",
+      error: ""
     };
   }
 
@@ -15,15 +16,20 @@ class TextItem extends React.Component {
     });
   };
   handleNewNoteAdd = () => {
-    let newNote = {
-      id: Date.now(),
-      text: this.state.text,
-      color: "yellow"
-    };
-    this.props.noteAdd(newNote);
-    this.setState({
-      text: ""
-    });
+    console.log("Before", this.state.text);
+    if (this.state.text) {
+      let newNote = {
+        id: Date.now(),
+        text: this.state.text,
+        color: "yellow"
+      };
+      this.props.noteAdd(newNote);
+    }
+    if (this.state.text.length === 0) {
+      this.setState({ error: "You can't add empty note!" });
+    } else {
+      this.setState({ error: "" });
+    }
   };
 
   render() {
@@ -38,6 +44,7 @@ class TextItem extends React.Component {
         <button className="btnAdd" onClick={this.handleNewNoteAdd}>
           Add
         </button>
+        {this.state.error !== "" ? <div>{this.state.error}</div> : <div />}
       </div>
     );
   }
